@@ -1,0 +1,163 @@
+﻿<Window x:Class="Calendar.Views.DisplayCalendarView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Calendario" Height="560" Width="410"
+    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" MaxWidth="410" MaxHeight="560" MinWidth="316" MinHeight="316" ScrollViewer.VerticalScrollBarVisibility="Disabled" ResizeMode="NoResize" WindowStyle="None" Topmost="True" WindowStartupLocation="CenterScreen" AllowsTransparency="True" MouseMove="Window_MouseMove" RenderTransformOrigin="0.5,0.5">
+    <Window.Resources>
+        <Style x:Key="CalendarArrowButton" TargetType="{x:Type Button}">
+            <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
+            <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <theme:ButtonChrome x:Name="Chrome" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" RenderMouseOver="{TemplateBinding IsMouseOver}" RenderPressed="{TemplateBinding IsPressed}" RenderDefaulted="{TemplateBinding IsDefaulted}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </theme:ButtonChrome>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsKeyboardFocused" Value="true">
+                                <Setter Property="RenderDefaulted" TargetName="Chrome" Value="true"/>
+                            </Trigger>
+                            <Trigger Property="ToggleButton.IsChecked" Value="true">
+                                <Setter Property="RenderPressed" TargetName="Chrome" Value="true"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="#ADADAD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="DayColumnLabel" TargetType="{x:Type Label}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="1"/>
+            <Setter Property="Width" Value="25" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Label}">
+                        <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Window.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform ScaleX="1" ScaleY="1"/>
+            <SkewTransform/>
+            <RotateTransform/>
+            <TranslateTransform/>
+        </TransformGroup>
+    </Window.RenderTransform>
+    <Window.Background>
+        <ImageBrush ImageSource="../assets/bonzi_transparent.png"/>
+    </Window.Background>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="148*"/>
+                <ColumnDefinition Width="40*" />
+            </Grid.ColumnDefinitions>
+
+        </Grid>
+        <StackPanel  Margin="125,190,115,70"  Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
+                <Label Style="{DynamicResource DayColumnLabel}">mon</Label>
+                <Label Style="{DynamicResource DayColumnLabel}">tu</Label>
+                <Label Style="{DynamicResource DayColumnLabel}">wed</Label>
+                <Label Style="{DynamicResource DayColumnLabel}">th</Label>
+                <Label Style="{DynamicResource DayColumnLabel}">fri</Label>
+                <Label Style="{DynamicResource DayColumnLabel}">sat</Label>
+                <Label Style="{DynamicResource DayColumnLabel}">sun</Label>
+
+            </StackPanel>
+
+            <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding DaySlotList}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="7">
+
+                        </UniformGrid>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Style="{DynamicResource DayButton}" Content="{Binding Path=.}">
+
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+
+            </ItemsControl>
+        </StackPanel>
+
+
+
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFD3D4D4" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight">
+            <Button Style="{DynamicResource ActionButton}" Padding="1,0,1,0" Margin="1,0,1,0" Click="Button_Click">Cerrar</Button>
+        </StackPanel>
+        <TextBlock x:Name="LblCalendarTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Consolas" FontSize="22" Text="{Binding Title, FallbackValue=2020}" Margin="0,156,0,0" Grid.Row="1" Foreground="#FF521D6D"/>
+        <Button Style="{DynamicResource CalendarArrowButton}" FontFamily="Wingdings" BorderThickness="0,0,0,0" Background="#FFAD8ECA" BorderBrush="{x:Null}" Margin="70,109,295,245" Content="ï" Grid.Row="1" Height="45" Width="45" Click="Button_Click_2"/>
+        <Button Style="{DynamicResource CalendarArrowButton}" FontFamily="Wingdings" Background="#FFAD8ECA" BorderBrush="{x:Null}" Margin="311,105,53,249" Content="ð" Grid.Row="1" Width="45" Height="45" Click="Button_Click_1"/>
+        <Rectangle Panel.ZIndex="-1" HorizontalAlignment="Left" Height="146" Margin="246,190,0,0" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="53" Fill="#4CEBAF14"/>
+
+
+
+    </Grid>
+    <Window.ContextMenu>
+        <ContextMenu>
+            <Separator>
+                <Separator.Template>
+                    <ControlTemplate TargetType="Separator">
+                        <StackPanel>
+                            <TextBlock Text="Links Útiles"></TextBlock>
+                            <Separator/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Separator.Template>
+            </Separator>
+            <MenuItem Icon="" Header="Gana dinero con MACH"></MenuItem>
+            <MenuItem Icon=""  Header="Obtén viajes gratis en Uber"></MenuItem>
+            <Separator>
+                <Separator.Template>
+                    <ControlTemplate TargetType="Separator">
+                        <StackPanel>
+                            <TextBlock Text="¿Quieres ser millonario?"></TextBlock>
+                            <Separator/>
+                        </StackPanel>
+                    </ControlTemplate>
+                </Separator.Template>
+            </Separator>
+            <MenuItem Header="Comenzar a invertir en Fintual"></MenuItem>
+
+        </ContextMenu>
+    </Window.ContextMenu>
+
+</Window>
