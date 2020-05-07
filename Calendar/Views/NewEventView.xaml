@@ -1,0 +1,25 @@
+﻿<Window x:Class="Calendar.Views.NewEventView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Calendar.Views"
+        mc:Ignorable="d"
+        Title="Window1" Height="300" Width="300">
+    <Grid Margin="0,0,0,7">
+        <DatePicker x:Name="DateInput" HorizontalAlignment="Left" Margin="89,18,0,0" VerticalAlignment="Top" Height="27" Width="193" FirstDayOfWeek="Monday" IsTodayHighlighted="True" IsDropDownOpen="True"/>
+        <Button x:Name="DialogSaveButton" Content="Save Event" HorizontalAlignment="Center" Height="32" Margin="0,222,0,0" VerticalAlignment="Top" Width="114" Click="DialogSaveButton_Click"/>
+        <Label Content="Pick a Date:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top"/>
+        <Label Content="Title:" HorizontalAlignment="Left" Height="26" Margin="10,50,0,0" VerticalAlignment="Top" Width="161"/>
+        <TextBox x:Name="TitleInput" HorizontalAlignment="Left" Height="22" Margin="16,74,0,0" Text="My New Event" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
+        <ComboBox x:Name="StartingHourInput" HorizontalAlignment="Left" Margin="119,109,0,0" VerticalAlignment="Top" Width="74" />
+        <Label Content="Starting Hour:" HorizontalAlignment="Left" Height="26" Margin="10,105,0,0" VerticalAlignment="Top" Width="89"/>
+        <ComboBox x:Name="StartingMinutesInput" HorizontalAlignment="Left" Margin="119,133,0,0" VerticalAlignment="Top" Width="74"/>
+        <Label Content="Starting Minutes:" HorizontalAlignment="Left" Height="26" Margin="11,131,0,0" VerticalAlignment="Top" Width="98"/>
+        <ComboBox x:Name="EndingHourInput" HorizontalAlignment="Left" Margin="119,170,0,0" VerticalAlignment="Top" Width="74" />
+        <Label Content="Ending Hour:" HorizontalAlignment="Left" Height="26" Margin="10,167,0,0" VerticalAlignment="Top" Width="89"/>
+        <ComboBox x:Name="EndingMinutesInput" HorizontalAlignment="Left" Margin="119,193,0,0" VerticalAlignment="Top" Width="74"/>
+        <Label Content="Ending Minutes:" HorizontalAlignment="Left" Height="26" Margin="11,191,0,0" VerticalAlignment="Top" Width="98"/>
+
+    </Grid>
+</Window>

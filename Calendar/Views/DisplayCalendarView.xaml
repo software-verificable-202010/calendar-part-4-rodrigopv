@@ -7,6 +7,7 @@
         Title="Calendario" Height="560" Width="410"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero" MaxWidth="410" MaxHeight="560" MinWidth="316" MinHeight="316" ScrollViewer.VerticalScrollBarVisibility="Disabled" ResizeMode="NoResize" WindowStyle="None" Topmost="True" WindowStartupLocation="CenterScreen" AllowsTransparency="True" MouseMove="Window_MouseMove" RenderTransformOrigin="0.5,0.5">
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <Style x:Key="CalendarArrowButton" TargetType="{x:Type Button}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource ButtonFocusVisual}"/>
             <Setter Property="Background" Value="{StaticResource ButtonNormalBackground}"/>
@@ -40,11 +41,12 @@
         <Style x:Key="DayColumnLabel" TargetType="{x:Type Label}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="1"/>
             <Setter Property="Width" Value="25" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="HorizontalContentAlignment" Value="Center"/>
             <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="FontSize" Value="10"></Setter>
+            <Setter Property="Padding" Value="1,1,1,1"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Label}">
@@ -59,6 +61,18 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+        </Style>
+        <Style x:Key="WeekColumnLabel" TargetType="Label">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Width" Value="25" />
+            <Setter Property="Height" Value="25"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="VerticalContentAlignment" Value="Top"/>
+            <Setter Property="Padding" Value="0,0,0,0"></Setter>
+            <Setter Property="Foreground" Value="WhiteSmoke"></Setter>
+            <Setter Property="FontSize" Value="8"></Setter>
         </Style>
     </Window.Resources>
     <Window.RenderTransform>
@@ -78,15 +92,199 @@
             <RowDefinition Height="10*"/>
             <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
-        <Grid>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40*" />
-                <ColumnDefinition Width="148*"/>
-                <ColumnDefinition Width="40*" />
-            </Grid.ColumnDefinitions>
+        <Border Width="180" Margin="95,5,0,0" Grid.Row="0" BorderBrush="Black" BorderThickness="5" HorizontalAlignment="Left">
+            <StackPanel HorizontalAlignment="Stretch"  Background="White">
+                <StackPanel Orientation="Horizontal">
+                    <Label FontSize="8">Titulo de Evento:</Label>
+                    <TextBlock Text="{Binding Path=SelectedEvent.Title}"></TextBlock>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Stretch"  Background="White">
+                    <StackPanel Orientation="Horizontal">
+                        <Label FontSize="8">Fecha de inicio:</Label>
+                        <TextBlock Text="{Binding Path=SelectedEvent.StartTime}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Stretch"  Background="White">
+                    <StackPanel Orientation="Horizontal">
+                        <Label FontSize="8">Fecha de término:</Label>
+                        <TextBlock Text="{Binding Path=SelectedEvent.EndingTime}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
 
-        </Grid>
-        <StackPanel  Margin="125,190,115,70"  Grid.Row="1">
+            </StackPanel>
+        </Border>
+
+        <TextBlock x:Name="LblCalendarTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Consolas" FontSize="22" Text="{Binding Title, FallbackValue=2020}" Margin="0,156,0,0" Grid.Row="1" Foreground="#FF521D6D"/>
+        <StackPanel Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Collapsed'}" Grid.Row="1" Width="170" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Horizontal" Margin="25,173,0,0" >
+            <Label Style="{DynamicResource DayColumnLabel}">mon</Label>
+            <Label Style="{DynamicResource DayColumnLabel}">tu</Label>
+            <Label Style="{DynamicResource DayColumnLabel}">wed</Label>
+            <Label Style="{DynamicResource DayColumnLabel}">th</Label>
+            <Label Style="{DynamicResource DayColumnLabel}">fri</Label>
+            <Label Style="{DynamicResource DayColumnLabel}">sat</Label>
+            <Label Style="{DynamicResource DayColumnLabel}">sun</Label>
+        </StackPanel>
+        <ItemsControl Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Collapsed'}" ItemsSource="{Binding WeekDaySlots}" Grid.Row="1" Height="15" Width="170" Margin="25,190,0,0" VerticalAlignment="Top">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Label Style="{DynamicResource DayColumnLabel}" Content="{Binding .}"></Label>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ScrollViewer Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Visible'}" VerticalScrollBarVisibility="Auto" Height="140" Width="215" Margin="110,207,83,70" Grid.Row="1"  CanContentScroll="True" PanningMode="VerticalOnly">
+            <DockPanel>
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >0AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >1AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >2AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >3AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >4AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >5AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >6AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >7AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >8AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >9AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >10AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >11AM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >12PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >1PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >2PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >3PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >4PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >5PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >6PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >7PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >8PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >9PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >10PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >11PM</Label>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
+                        <ItemsControl ItemsSource="{Binding MondayEventSlots}" Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas  Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle Width="{Binding Width}" MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding TuesdayEventSlots}" Margin="5,0,0,0"  Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Width="{Binding Width}" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding WednesdayEventSlots}" Margin="5,0,0,0"  Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Width="{Binding Width}" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding ThursdayEventSlots}" Margin="5,0,0,0"  Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Width="{Binding Width}" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                        <ItemsControl ItemsSource="{Binding FridayEventSlots}" Margin="5,0,0,0"  Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Width="{Binding Width}" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                        <ItemsControl ItemsSource="{Binding SaturdayEventSlots}"  Margin="5,0,0,0"  Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Width="{Binding Width}" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                        <ItemsControl ItemsSource="{Binding SundayEventSlots}"  Margin="5,0,0,0"  Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Canvas Height="600" Width="20" Margin="0,0,0,0">
+                                    </Canvas>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Rectangle MouseMove="UIElement_OnMouseMove" MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown" Width="{Binding Width}" Margin="{Binding Margin}"  Height="{Binding Height}" Fill="{Binding BackgroundColor}" >
+                                    </Rectangle>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+
+                        </ItemsControl>
+
+                    </StackPanel>
+
+
+                </StackPanel>
+            </DockPanel>
+        </ScrollViewer>
+
+        <StackPanel  Margin="125,190,115,70"  Grid.Row="1" Visibility="{Binding MonthCalendarVisibleStatus, FallbackValue='Collapsed'}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
                 <Label Style="{DynamicResource DayColumnLabel}">mon</Label>
                 <Label Style="{DynamicResource DayColumnLabel}">tu</Label>
@@ -95,21 +293,17 @@
                 <Label Style="{DynamicResource DayColumnLabel}">fri</Label>
                 <Label Style="{DynamicResource DayColumnLabel}">sat</Label>
                 <Label Style="{DynamicResource DayColumnLabel}">sun</Label>
-
             </StackPanel>
-
             <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding DaySlotList}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <UniformGrid Columns="7">
-
                         </UniformGrid>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button Style="{DynamicResource DayButton}" Content="{Binding Path=.}">
-
                         </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -117,16 +311,17 @@
             </ItemsControl>
         </StackPanel>
 
+        <Rectangle Visibility="{Binding MonthCalendarVisibleStatus, FallbackValue='Collapsed'}" Panel.ZIndex="-1" HorizontalAlignment="Left" Height="146" Margin="246,190,0,0" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="53" Fill="#4CEBAF14"/>
 
 
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFD3D4D4" HorizontalAlignment="Center" VerticalAlignment="Center" FlowDirection="LeftToRight">
-            <Button Style="{DynamicResource ActionButton}" Padding="1,0,1,0" Margin="1,0,1,0" Click="Button_Click">Cerrar</Button>
+            <Button Style="{DynamicResource ActionButton}" Padding="1,0,1,0" Margin="1,0,1,0" Click="Button_Click" Content="Close"/>
         </StackPanel>
-        <TextBlock x:Name="LblCalendarTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Consolas" FontSize="22" Text="{Binding Title, FallbackValue=2020}" Margin="0,156,0,0" Grid.Row="1" Foreground="#FF521D6D"/>
         <Button Style="{DynamicResource CalendarArrowButton}" FontFamily="Wingdings" BorderThickness="0,0,0,0" Background="#FFAD8ECA" BorderBrush="{x:Null}" Margin="70,109,295,245" Content="ï" Grid.Row="1" Height="45" Width="45" Click="Button_Click_2"/>
         <Button Style="{DynamicResource CalendarArrowButton}" FontFamily="Wingdings" Background="#FFAD8ECA" BorderBrush="{x:Null}" Margin="311,105,53,249" Content="ð" Grid.Row="1" Width="45" Height="45" Click="Button_Click_1"/>
-        <Rectangle Panel.ZIndex="-1" HorizontalAlignment="Left" Height="146" Margin="246,190,0,0" Grid.Row="1" Stroke="Black" VerticalAlignment="Top" Width="53" Fill="#4CEBAF14"/>
+        <Button Content="Toggle View" HorizontalAlignment="Left" Height="28" Margin="246,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="110" Click="Button_Click_3"/>
+        <Button Content="New Event" HorizontalAlignment="Left" Height="28" Margin="38,11,0,0" Grid.Row="2" VerticalAlignment="Top" Width="110" Click="NewEvent_Button_Click"/>
 
 
 
