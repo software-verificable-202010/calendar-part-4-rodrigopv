@@ -107,6 +107,7 @@ namespace Calendar.ViewModels
                 BuildCalendarDaySlots();
                 BuildEventSlots();
                 BuildWeekDaysSlots();
+                RefreshUIDayEventSlots();
                 OnPropertyChanged(nameof(CurrentYear));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(DaySlotList));
@@ -123,6 +124,7 @@ namespace Calendar.ViewModels
                 BuildCalendarDaySlots();
                 BuildEventSlots();
                 BuildWeekDaysSlots();
+                RefreshUIDayEventSlots();
                 OnPropertyChanged(nameof(CurrentMonth));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(DaySlotList));
@@ -138,6 +140,7 @@ namespace Calendar.ViewModels
                 _calendar.CurrentTime = new DateTime(CurrentYear, CurrentMonth, value);
                 BuildEventSlots();
                 BuildWeekDaysSlots();
+                RefreshUIDayEventSlots();
                 OnPropertyChanged(nameof(CurrentDay));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(DaySlotList));
@@ -160,6 +163,7 @@ namespace Calendar.ViewModels
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(DaySlotList));
                 OnPropertyChanged(nameof(WeekDaySlots));
+                RefreshUIDayEventSlots();
             }
         }
 
@@ -213,7 +217,8 @@ namespace Calendar.ViewModels
             var firstDayOfMonth = new DateTime(CurrentYear, CurrentMonth, 1);
             if (firstDayOfMonth.DayOfWeek == DayOfWeek.Sunday)
             {
-                // warning: magic number
+                // Offset for weeks beginning at Monday.
+                // Sunday would be the last day, so fill 6 days.
                 return 6;
             }
 
