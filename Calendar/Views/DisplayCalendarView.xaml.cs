@@ -1,5 +1,7 @@
 ﻿
+using System;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using Calendar.Models;
@@ -77,6 +79,13 @@ namespace Calendar.Views
                     newEventDialog.StartingMinutes, newEventDialog.EndingHour, newEventDialog.EndingMinutes);
                 _displayCalendarViewModel.AddEvent(newEvent);
             }
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            Button senderButton = (Button) sender;
+            _displayCalendarViewModel.CurrentDay = Int32.Parse(senderButton.Content.ToString());
+            _displayCalendarViewModel.ToggleDisplayMode();
         }
     }
 }

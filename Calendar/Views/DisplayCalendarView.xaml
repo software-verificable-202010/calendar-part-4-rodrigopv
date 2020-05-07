@@ -303,7 +303,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Style="{DynamicResource DayButton}" Content="{Binding Path=.}">
+                        <Button Style="{DynamicResource DayButton}" Click="ButtonBase_OnClick" Content="{Binding Path=.}">
                         </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
