@@ -7,7 +7,7 @@ using System.Windows.Navigation;
 namespace Calendar.Models
 {
     [Serializable]
-    class CalendarEvent
+    public class CalendarEvent
     {
         private string _title;
         private int _startingHour;

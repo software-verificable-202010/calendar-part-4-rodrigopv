@@ -8,7 +8,7 @@ using System.Windows.Documents;
 namespace Calendar.Models
 {
     [Serializable]
-    class CalendarModel
+    public class CalendarModel
     {
         private List<CalendarEvent> _events;
         public CalendarModel()
