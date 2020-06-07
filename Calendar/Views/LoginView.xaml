@@ -11,7 +11,7 @@
 
         <Border BorderThickness="1" BorderBrush="Black" CornerRadius="10" Padding="3"
                 HorizontalAlignment="Left" VerticalAlignment="Center" Background="White" Margin="179,0,0,0">
-            <TextBox Width="200" Text="rodrigo" BorderThickness="0"/>
+            <TextBox x:Name="InputUsername" Width="200" Text="rodrigo" BorderThickness="0" PreviewTextInput="TextBox_PreviewTextInput"/>
         </Border>
 
         <Border Width="100" BorderThickness="1" BorderBrush="Black" CornerRadius="10" Padding="1" Background="White" Margin="0,118,63,0" HorizontalAlignment="Right" Height="30" VerticalAlignment="Top">

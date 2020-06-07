@@ -5,10 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Calendar.Views"
         mc:Ignorable="d"
-        Title="Window1" Height="300" Width="300">
+        Title="Window1" Height="420" Width="300">
     <Grid Margin="0,0,0,7">
         <DatePicker x:Name="DateInput" HorizontalAlignment="Left" Margin="89,18,0,0" VerticalAlignment="Top" Height="27" Width="193" FirstDayOfWeek="Monday" IsTodayHighlighted="True" IsDropDownOpen="True"/>
-        <Button x:Name="DialogSaveButton" Content="Save Event" HorizontalAlignment="Center" Height="32" Margin="0,222,0,0" VerticalAlignment="Top" Width="114" Click="DialogSaveButton_Click"/>
+        <Button x:Name="DialogSaveButton" Content="Save Event" HorizontalAlignment="Left" Height="32" Margin="171,347,0,0" VerticalAlignment="Top" Width="114" Click="DialogSaveButton_Click"/>
+        <Button x:Name="DialogDeleteButton" Visibility="Hidden" Content="Delete Event" HorizontalAlignment="Left" Height="32" Margin="15,347,0,0" VerticalAlignment="Top" Width="114" Click="DialogDeleteButton_Click"/>
+
         <Label Content="Pick a Date:" HorizontalAlignment="Left" Margin="10,18,0,0" VerticalAlignment="Top"/>
         <Label Content="Title:" HorizontalAlignment="Left" Height="26" Margin="10,50,0,0" VerticalAlignment="Top" Width="161"/>
         <TextBox x:Name="TitleInput" HorizontalAlignment="Left" Height="22" Margin="16,74,0,0" Text="My New Event" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
@@ -20,6 +22,9 @@
         <Label Content="Ending Hour:" HorizontalAlignment="Left" Height="26" Margin="10,167,0,0" VerticalAlignment="Top" Width="89"/>
         <ComboBox x:Name="EndingMinutesInput" HorizontalAlignment="Left" Margin="119,193,0,0" VerticalAlignment="Top" Width="74"/>
         <Label Content="Ending Minutes:" HorizontalAlignment="Left" Height="26" Margin="11,191,0,0" VerticalAlignment="Top" Width="98"/>
-
+        <Label Content="Description:" HorizontalAlignment="Left" Height="26" Margin="11,220,0,0" VerticalAlignment="Top" Width="98"/>
+        <TextBox x:Name="DescriptionInput" Height="40" Width="270" Margin="0,245,0,0" VerticalAlignment="Top" TextWrapping="Wrap" AcceptsReturn="True"></TextBox>
+        <Label Content="Invited Users (comma-delimited list):" HorizontalAlignment="Left" Height="26" Margin="11,286,0,0" VerticalAlignment="Top" Width="200"/>
+        <TextBox x:Name="InvitedUsersInput" Height="20" Width="270" Margin="0,310,0,0" VerticalAlignment="Top"></TextBox>
     </Grid>
 </Window>

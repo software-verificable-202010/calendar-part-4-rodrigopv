@@ -4,9 +4,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Printing;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using System.Windows;
 using Calendar.Models;
 
@@ -14,42 +12,61 @@ namespace Calendar.ViewModels
 {
     class DisplayCalendarViewModel : BaseViewModel
     {
+        #region Constants
         private readonly int DISPLAY_MONTH = 1;
         private readonly int DISPLAY_WEEK = 2;
 
         private int DECEMBER = 12;
         private int JANUARY = 1;
+        #endregion
 
-        private int _displayMode;
-        private readonly CalendarModel _calendar;
+        #region Fields
+        private string loggedUser = "";
+        private int displayMode;
+        private readonly CalendarModel calendar;
+        public List<string> DaySlotList
+        {
+            get; set;
+        } = new List<string>();
+        private CalendarEventViewModel selectedEvent;
+        #endregion
 
         public DisplayCalendarViewModel()
         {
-            if (File.Exists("calendar.dat"))
+            if (File.Exists("calendar_v2.dat"))
             {
-                Stream fileStream = new FileStream("calendar.dat", FileMode.Open);
+                Stream fileStream = new FileStream("calendar_v2.dat", FileMode.Open);
                 BinaryFormatter deserializer = new BinaryFormatter();
-                _calendar = (CalendarModel)deserializer.Deserialize(fileStream);
+                calendar = (CalendarModel)deserializer.Deserialize(fileStream);
+                fileStream.Close();
             }
             else
             {
-                _calendar = new CalendarModel();
+                calendar = new CalendarModel();
             }
             
             CurrentYear = DateTime.Today.Year;
             CurrentMonth = DateTime.Today.Month;
             CurrentDay = DateTime.Today.Day;
             
-            _displayMode = DISPLAY_WEEK;
+            displayMode = DISPLAY_WEEK;
         }
 
-        public String Title => String.Join(" ", GetCurrentMonthName(), CurrentYear.ToString());
+        #region Properties
+        public string Title
+        {
+            get
+            {
+                return String.Format("{0} {1}", GetCurrentMonthName(), CurrentYear.ToString());
+            }
+        }
 
         public Visibility MonthCalendarVisibleStatus
         {
             get
             {
-                if (_displayMode == DISPLAY_MONTH) return Visibility.Visible;
+                if (displayMode == DISPLAY_MONTH)
+                    return Visibility.Visible;
                 return Visibility.Collapsed;
             }
         }
@@ -58,52 +75,20 @@ namespace Calendar.ViewModels
         {
             get
             {
-                if (_displayMode == DISPLAY_WEEK) return Visibility.Visible;
+                if (displayMode == DISPLAY_WEEK)
+                    return Visibility.Visible;
                 return Visibility.Collapsed;
             }
         }
-
-        public bool DisplayMonthCalendar()
-        {
-            if(_displayMode == DISPLAY_MONTH)
-                return true;
-
-            return false;
-        }
-        public bool DisplayWeekCalendar()
-        {
-            if (_displayMode == DISPLAY_WEEK)
-                return true;
-
-            return false;
-        }
-
-        public void ToggleDisplayMode()
-        {
-            if (_displayMode == DISPLAY_MONTH)
-            {
-                _displayMode = DISPLAY_WEEK;
-            } 
-            else if (_displayMode == DISPLAY_WEEK)
-            {
-                _displayMode = DISPLAY_MONTH;
-            }
-            OnPropertyChanged(nameof(DisplayMonthCalendar));
-            OnPropertyChanged(nameof(DisplayWeekCalendar));
-            OnPropertyChanged(nameof(MonthCalendarVisibleStatus));
-            OnPropertyChanged(nameof(WeekCalendarVisibleStatus));
-            OnPropertyChanged(nameof(WeekDaySlots));
-
-        } 
-
-
-
         public int CurrentYear
         {
-            get => _calendar.CurrentTime.Year;
+            get
+            {
+                return calendar.CurrentTime.Year;
+            }
             set
             {
-                _calendar.CurrentTime = new DateTime(value, _calendar.CurrentTime.Month, _calendar.CurrentTime.Day);
+                calendar.CurrentTime = new DateTime(value, calendar.CurrentTime.Month, calendar.CurrentTime.Day);
                 BuildCalendarDaySlots();
                 BuildEventSlots();
                 BuildWeekDaysSlots();
@@ -117,10 +102,13 @@ namespace Calendar.ViewModels
 
         public int CurrentMonth
         {
-            get => _calendar.CurrentTime.Month;
+            get
+            {
+                return calendar.CurrentTime.Month;
+            }
             set
             {
-                _calendar.CurrentTime = new DateTime(CurrentYear, value, CurrentDay);
+                calendar.CurrentTime = new DateTime(CurrentYear, value, CurrentDay);
                 BuildCalendarDaySlots();
                 BuildEventSlots();
                 BuildWeekDaysSlots();
@@ -134,10 +122,13 @@ namespace Calendar.ViewModels
 
         public int CurrentDay
         {
-            get => _calendar.CurrentTime.Day;
+            get
+            {
+                return calendar.CurrentTime.Day;
+            }
             set
             {
-                _calendar.CurrentTime = new DateTime(CurrentYear, CurrentMonth, value);
+                calendar.CurrentTime = new DateTime(CurrentYear, CurrentMonth, value);
                 BuildEventSlots();
                 BuildWeekDaysSlots();
                 RefreshUIDayEventSlots();
@@ -150,10 +141,13 @@ namespace Calendar.ViewModels
 
         public DateTime CurrentDateTime
         {
-            get => _calendar.CurrentTime;
+            get
+            {
+                return calendar.CurrentTime;
+            }
             set
             {
-                _calendar.CurrentTime = value;
+                calendar.CurrentTime = value;
                 BuildCalendarDaySlots();
                 BuildEventSlots();
                 BuildWeekDaysSlots();
@@ -166,8 +160,71 @@ namespace Calendar.ViewModels
                 RefreshUIDayEventSlots();
             }
         }
+        public CalendarEventViewModel SelectedEvent
+        {
+            get
+            {
+                return selectedEvent;
+            }
+            set
+            {
+                selectedEvent = value;
+                OnPropertyChanged(nameof(SelectedEvent));
+            }
+        }
 
-        public List<string> DaySlotList { get; set; } = new List<string>();
+        #endregion
+
+        #region Methods
+        public void SetLoggedUser(string user)
+        {
+            
+            loggedUser = user;
+            BuildEventSlots();
+            RefreshUIDayEventSlots();
+        }
+
+        public string GetLoggedUser()
+        {
+            return loggedUser;
+        }
+
+
+
+        public bool DisplayMonthCalendar()
+        {
+            if(displayMode == DISPLAY_MONTH)
+                return true;
+
+            return false;
+        }
+        public bool DisplayWeekCalendar()
+        {
+            if (displayMode == DISPLAY_WEEK)
+                return true;
+
+            return false;
+        }
+
+        public void ToggleDisplayMode()
+        {
+            if (displayMode == DISPLAY_MONTH)
+            {
+                displayMode = DISPLAY_WEEK;
+            } 
+            else if (displayMode == DISPLAY_WEEK)
+            {
+                displayMode = DISPLAY_MONTH;
+            }
+            OnPropertyChanged(nameof(DisplayMonthCalendar));
+            OnPropertyChanged(nameof(DisplayWeekCalendar));
+            OnPropertyChanged(nameof(MonthCalendarVisibleStatus));
+            OnPropertyChanged(nameof(WeekCalendarVisibleStatus));
+            OnPropertyChanged(nameof(WeekDaySlots));
+
+        }
+
+
 
         public void SetNextMonth()
         {
@@ -204,7 +261,7 @@ namespace Calendar.ViewModels
 
         public int GetCurrentDay()
         {
-            return _calendar.CurrentTime.Day;
+            return calendar.CurrentTime.Day;
         }
 
         private string GetCurrentMonthName()
@@ -222,8 +279,11 @@ namespace Calendar.ViewModels
                 return 6;
             }
 
-            return (int)firstDayOfMonth.DayOfWeek - 1;
+            return Convert.ToInt32(firstDayOfMonth.DayOfWeek) - 1;
+
         }
+
+
 
         private void BuildCalendarDaySlots()
         {
@@ -235,15 +295,19 @@ namespace Calendar.ViewModels
 
             for (var dayToAdd = 1; dayToAdd < DateTime.DaysInMonth(CurrentYear, CurrentMonth)+1; dayToAdd++)
             {
-                daySlots.Add(dayToAdd.ToString());
+                DateTime day = new DateTime(CurrentYear, CurrentMonth, dayToAdd);
+                if (calendar.GetEventsAtDateTime(day).Count != 0)
+                {
+                    daySlots.Add(String.Format("{0}*", dayToAdd.ToString()));
+                }
+                else
+                {
+                    daySlots.Add(dayToAdd.ToString());
+                }
+                
             }
 
             DaySlotList = daySlots;
-        }
-
-        private void BuildWeekDayHourCalendarEventSlots(int day, int hour)
-        {
-
         }
 
         private void BuildEventSlots()
@@ -267,20 +331,27 @@ namespace Calendar.ViewModels
 
             DateTime targetDateTime = GetWeekDay(day);
 
-            foreach (var calendarEvent in _calendar.GetEventsAtDateTime(targetDateTime))
+            foreach (var calendarEvent in calendar.GetEventsAtDateTime(targetDateTime))
             {
-                var dayEvent = new CalendarEventViewModel(calendarEvent);
-                dayEvents.Add(dayEvent);
+                List<string> relatedPeople = new List<string>();
+                relatedPeople.Add(calendarEvent.Owner);
+                relatedPeople.AddRange(calendarEvent.InvitedUsers.Split(","));
+                if(relatedPeople.Contains(loggedUser)) {
+                    var dayEvent = new CalendarEventViewModel(calendarEvent);
+                    dayEvents.Add(dayEvent);
+                }
+
             }
+            
             return dayEvents.OrderBy(o=>o.Width).Reverse().ToList();
         }
 
 
         private DateTime GetWeekFirstDay()
         {
-            DayOfWeek currentDay = _calendar.CurrentTime.DayOfWeek;
+            DayOfWeek currentDay = calendar.CurrentTime.DayOfWeek;
             int daysTillCurrentDay = currentDay - DayOfWeek.Sunday;
-            DateTime sunday = _calendar.CurrentTime.AddDays(-daysTillCurrentDay);
+            DateTime sunday = calendar.CurrentTime.AddDays(-daysTillCurrentDay);
 
             return sunday.AddDays(1); // Monday
         }
@@ -341,29 +412,52 @@ namespace Calendar.ViewModels
             OnPropertyChanged(nameof(SundayEventSlots));
         }
 
-        public List<int> WeekDaySlots { get; set; } = new List<int>();
-        public List<CalendarEventViewModel> MondayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-        public List<CalendarEventViewModel> TuesdayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-        public List<CalendarEventViewModel> WednesdayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-        public List<CalendarEventViewModel> ThursdayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-        public List<CalendarEventViewModel> FridayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-        public List<CalendarEventViewModel> SaturdayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-        public List<CalendarEventViewModel> SundayEventSlots { get; set; } = new List<CalendarEventViewModel>();
-
-        private CalendarEventViewModel _selectedEvent;
-        public CalendarEventViewModel SelectedEvent
+        public List<int> WeekDaySlots
         {
-            get { return _selectedEvent; }
-            set
-            {
-                _selectedEvent = value;
-                OnPropertyChanged(nameof(SelectedEvent));
-            }
-        }
+            get; set;
+        } = new List<int>();
+
+        public List<CalendarEventViewModel> MondayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+        public List<CalendarEventViewModel> TuesdayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+        public List<CalendarEventViewModel> WednesdayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+        public List<CalendarEventViewModel> ThursdayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+        public List<CalendarEventViewModel> FridayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+        public List<CalendarEventViewModel> SaturdayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+        public List<CalendarEventViewModel> SundayEventSlots
+        {
+            get; set;
+        } = new List<CalendarEventViewModel>();
+
+
+
 
         public void AddEvent(CalendarEvent newEvent)
         {
-            _calendar.AddEvent(newEvent);
+            calendar.AddEvent(newEvent);
            
             BuildEventSlots();
             RefreshUIDayEventSlots();
@@ -372,11 +466,11 @@ namespace Calendar.ViewModels
 
         public void PreviousButtonClick()
         {
-            if (_displayMode == DISPLAY_MONTH)
+            if (displayMode == DISPLAY_MONTH)
             {
                 SetPreviousMonth();
             }
-            else if (_displayMode == DISPLAY_WEEK)
+            else if (displayMode == DISPLAY_WEEK)
             {
                 SetPreviousWeek();
             }
@@ -384,24 +478,54 @@ namespace Calendar.ViewModels
 
         public void NextButtonClick()
         {
-            if (_displayMode == DISPLAY_MONTH)
+            if (displayMode == DISPLAY_MONTH)
             {
                 SetNextMonth();
             }
-            else if (_displayMode == DISPLAY_WEEK)
+            else if (displayMode == DISPLAY_WEEK)
             {
                 SetNextWeek();
             }
         }
 
+        public void UpdateCalendarEvent(CalendarEvent calendarEvent, string newTitle, DateTime newDate, string newInvitedUsers, string newDescription, int newEndingHour, int newEndingMinutes, int newStartingHour, int newStartingMinutes)
+        {
+            calendarEvent.Title = newTitle;
+            calendarEvent.EventDate = newDate;
+            calendarEvent.InvitedUsers = newInvitedUsers;
+            calendarEvent.Description = newDescription;
+            calendarEvent.SetEndingHour(newEndingHour);
+            calendarEvent.SetEndingMinutes(newEndingMinutes);
+            calendarEvent.SetStartingHour(newStartingHour);
+            calendarEvent.SetStartingMinutes(newStartingMinutes);
+
+            BuildEventSlots();
+            RefreshUIDayEventSlots();
+            SaveCalendarToFile();
+        }
+
         public void SaveCalendarToFile()
         {
             
-            Stream fileToWrite = new FileStream("calendar.dat", FileMode.Create);
+            Stream fileToWrite = new FileStream("calendar_v2.dat", FileMode.Create);
             BinaryFormatter binarySerializer = new BinaryFormatter();
-            binarySerializer.Serialize(fileToWrite, _calendar);
+            binarySerializer.Serialize(fileToWrite, calendar);
             fileToWrite.Close();
 
         }
+
+        public List<CalendarEvent> GetEventsAtDateTime(DateTime pickedDate)
+        {
+            return calendar.GetEventsAtDateTime(pickedDate);
+        }
+
+        public void DeleteCalendarEvent(CalendarEventViewModel calendarEventViewModel)
+        {
+            calendar.RemoveEvent(calendarEventViewModel.CalendarEvent);
+            BuildEventSlots();
+            RefreshUIDayEventSlots();
+            SaveCalendarToFile();
+        }
+        #endregion
     }
 }

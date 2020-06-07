@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar", "Calendar\Calendar.csproj", "{5FC223FE-5E15-4B09-8FE4-14E330AA9CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Calendar.Tests", "Calendar.Tests\Calendar.Tests.csproj", "{61F66BE9-CC73-41FF-AEB6-7852978446A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Calendar.Tests", "Calendar.Tests\Calendar.Tests.csproj", "{61F66BE9-CC73-41FF-AEB6-7852978446A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{621A9777-DB51-4F11-B8D5-AC4ED415D983}"
+	ProjectSection(SolutionItems) = preProject
+		entrega.txt = entrega.txt
+		Readme.md = Readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

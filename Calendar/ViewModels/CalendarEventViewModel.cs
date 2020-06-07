@@ -14,52 +14,71 @@ using Color = System.Drawing.Color;
 
 namespace Calendar.ViewModels
 {
-    class CalendarEventViewModel : BaseViewModel
+    public class CalendarEventViewModel : BaseViewModel
     {
-        private CalendarEvent _calendarEvent;
+        #region Constants
         private const int MaxEventWidth = 20;
         private const int MinEventWidth = 10;
+        #endregion
+
+        #region Fields
+        private CalendarEvent calendarEvent;
+        #endregion
 
         public CalendarEventViewModel(CalendarEvent calendarEvent)
         {
-            _calendarEvent = calendarEvent;
+            this.calendarEvent = calendarEvent;
             BackgroundColor = GetRandomColor();
             Random randomNumberGenerator = new Random();
             Width = randomNumberGenerator.Next(MinEventWidth, MaxEventWidth + 1);
 
         }
-
-        public SolidColorBrush BackgroundColor { get; set; }
-        public int Width { get; set; }
-
-        public string GetStartTime()
+        #region Properties
+        public SolidColorBrush BackgroundColor
         {
-            return _calendarEvent.GetStartingHour().ToString("D2") + ":" + _calendarEvent.GetStartingMinutes().ToString("D2");
+            get; set;
         }
-        public string GetFinishTime()
+
+        public int Width
         {
-            return _calendarEvent.GetEndingHour().ToString("D2") + ":" + _calendarEvent.GetEndingMinutes().ToString("D2");
+            get; set;
+        }
+        public string Description
+        {
+            get
+            {
+                return calendarEvent.Description;
+            }
         }
 
         public string StartTime
         {
-            get { return GetStartTime(); }
+            get
+            {
+                return GetStartTime();
+            }
         }
         public string EndingTime
         {
-            get { return GetFinishTime(); }
+            get
+            {
+                return GetFinishTime();
+            }
         }
 
         public string Title
         {
-            get { return _calendarEvent.Title; }
+            get
+            {
+                return calendarEvent.Title;
+            }
         }
 
         public Thickness Margin
         {
             get
             {
-                int topMargin = (int)Math.Ceiling(_calendarEvent.GetStartingHour() * Constants.HourSlotHeight) + (int)Math.Floor(_calendarEvent.GetStartingMinutes()*Constants.PerMinuteHeight);
+                int topMargin = (int)Math.Ceiling(calendarEvent.GetStartingHour() * Constants.HourSlotHeight) + (int)Math.Floor(calendarEvent.GetStartingMinutes() * Constants.PerMinuteHeight);
                 return new Thickness(0, topMargin, 0, 0);
             }
         }
@@ -68,25 +87,60 @@ namespace Calendar.ViewModels
         {
             get
             {
-                var hourHeight = (int) Math.Floor(Constants.HourSlotHeight *
-                                                   (_calendarEvent.GetEndingHour() - _calendarEvent.GetStartingHour()));
-                var minutesHeight = (int) Math.Ceiling(Constants.PerMinuteHeight * _calendarEvent.GetEndingMinutes());
+                var hourHeight = (int)Math.Floor(Constants.HourSlotHeight *
+                                                 (calendarEvent.GetEndingHour() - calendarEvent.GetStartingHour()));
+                var minutesHeight = (int)Math.Ceiling(Constants.PerMinuteHeight * calendarEvent.GetEndingMinutes());
                 return hourHeight + minutesHeight;
             }
         }
 
-        private byte GetRandomByte()
+        public string Owner
+        {
+            get
+            {
+                return calendarEvent.Owner;
+
+            }
+            set
+            {
+                calendarEvent.Owner = value;
+
+            }
+        }
+
+        public CalendarEvent CalendarEvent
+        {
+            get
+            {
+                return calendarEvent;
+
+            }
+        }
+        #endregion
+
+        #region Methods
+        public string GetStartTime()
+        {
+            return calendarEvent.GetStartingHour().ToString("D2") + ":" + calendarEvent.GetStartingMinutes().ToString("D2");
+        }
+        public string GetFinishTime()
+        {
+            return calendarEvent.GetEndingHour().ToString("D2") + ":" + calendarEvent.GetEndingMinutes().ToString("D2");
+        }
+        private static byte GetRandomByte()
         {
             Random randomNumberGenerator = new Random();
             return (byte)randomNumberGenerator.Next(byte.MaxValue + 1);
         }
 
-        private SolidColorBrush GetRandomColor()
+        private static SolidColorBrush GetRandomColor()
         {
             var color = System.Windows.Media.Color.FromArgb((byte)255, GetRandomByte(), GetRandomByte(), GetRandomByte());
-            
+
             return new SolidColorBrush(color);
         }
+        #endregion
+
     }
 
 

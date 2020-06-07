@@ -24,9 +24,20 @@ namespace Calendar.Views
 
         private void DoLogin(object sender, MouseButtonEventArgs e)
         {
-            var calendarWindow = new DisplayCalendarView();
+            var calendarWindow = new DisplayCalendarView(InputUsername.Text);
             calendarWindow.Show();
             this.Close();
+        }
+
+        private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Gets the written letter as char as event sends a length-1 string.
+            var writtenChar = e.Text[0];
+
+            if (! char.IsLetter(writtenChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

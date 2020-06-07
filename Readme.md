@@ -1,4 +1,4 @@
-# BuddyCalendar
+# Entrega 3 - BuddyCalendar
 BuddyCalendar es una aplicación de calendario orientada a jóvenes y personas que buscan tener un acompañante en su escritorio. Basado e inspirado en Bonzi Buddy (https://es.wikipedia.org/wiki/Bonzi_Buddy).
 
 ## Stack
@@ -6,3 +6,11 @@ Se diseñó la aplicación en C# utilizando como base el framework multiplataforma 
 
 ## Cómo usar
 Para ejecutar, es posible abrir la solución en Visual Studio, compilar y ejecutar el proyecto "Calendar"
+
+## Sobre warning CA2235
+Se ha omitido solucionar los warnings de tipo CA2235 debido a que estos corresponden a un bug de FxCop al ser usado sobre un proyecto hecho con .NET Core 3.0. https://github.com/dotnet/roslyn-analyzers/issues/1510, https://github.com/dotnet/roslyn-analyzers/issues/3616
+
+
+
+## Otros detalles
+Debido a dificultades gráficas se ha implementado el marcador de eventos en la vista mensual de manera minimalista indicando con un "*" si hay eventos en ese día.

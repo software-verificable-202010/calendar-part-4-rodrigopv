@@ -10,10 +10,10 @@ namespace Calendar.Models
     [Serializable]
     public class CalendarModel
     {
-        private List<CalendarEvent> _events;
+        private List<CalendarEvent> events;
         public CalendarModel()
         {
-            _events = new List<CalendarEvent>();
+            events = new List<CalendarEvent>();
         }
 
         public DateTime CurrentTime { get; set; }
@@ -22,7 +22,7 @@ namespace Calendar.Models
         {
             List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
 
-            var result = from calendarEvent in _events
+            var result = from calendarEvent in events
                 where (calendarEvent.EventDate.Day == date.Day
                        && calendarEvent.EventDate.Month == date.Month
                        && calendarEvent.EventDate.Year == date.Year)
@@ -33,7 +33,12 @@ namespace Calendar.Models
 
         public void AddEvent(CalendarEvent calendarEvent) 
         {
-            _events.Add(calendarEvent);
+            events.Add(calendarEvent);
+        }
+
+        public void RemoveEvent(CalendarEvent calendarEvent)
+        {
+            events.Remove(calendarEvent);
         }
     }
 }

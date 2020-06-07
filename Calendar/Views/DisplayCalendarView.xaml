@@ -95,19 +95,29 @@
         <Border Width="180" Margin="95,5,0,0" Grid.Row="0" BorderBrush="Black" BorderThickness="5" HorizontalAlignment="Left">
             <StackPanel HorizontalAlignment="Stretch"  Background="White">
                 <StackPanel Orientation="Horizontal">
-                    <Label FontSize="8">Titulo de Evento:</Label>
-                    <TextBlock Text="{Binding Path=SelectedEvent.Title}"></TextBlock>
+                    <Label Padding="0" Height="10" FontSize="8" Content="Autor:"></Label>
+                    <TextBlock FontSize="8" Text="{Binding Path=SelectedEvent.Owner}"></TextBlock>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Padding="0" Height="10" FontSize="8" Content="Titulo de Evento:"></Label>
+                    <TextBlock FontSize="8" Text="{Binding Path=SelectedEvent.Title}"></TextBlock>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Stretch"  Background="White">
                     <StackPanel Orientation="Horizontal">
-                        <Label FontSize="8">Fecha de inicio:</Label>
-                        <TextBlock Text="{Binding Path=SelectedEvent.StartTime}"></TextBlock>
+                        <Label Padding="0" FontSize="8" Content="Fecha de inicio:"></Label>
+                        <TextBlock Padding="0" FontSize="8" Text="{Binding Path=SelectedEvent.StartTime}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Stretch"  Background="White">
                     <StackPanel Orientation="Horizontal">
-                        <Label FontSize="8">Fecha de término:</Label>
-                        <TextBlock Text="{Binding Path=SelectedEvent.EndingTime}"></TextBlock>
+                        <Label Padding="0" FontSize="8" Content="Fecha de término:"></Label>
+                        <TextBlock Padding="0" FontSize="8" Text="{Binding Path=SelectedEvent.EndingTime}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Stretch"  Background="White">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Padding="0" FontSize="8" Content="Descripción:"></Label>
+                        <TextBlock Padding="0" FontSize="8" Text="{Binding Path=SelectedEvent.Description}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
 
@@ -116,13 +126,13 @@
 
         <TextBlock x:Name="LblCalendarTitle" VerticalAlignment="Top" HorizontalAlignment="Center" FontWeight="Bold" FontFamily="Consolas" FontSize="22" Text="{Binding Title, FallbackValue=2020}" Margin="0,156,0,0" Grid.Row="1" Foreground="#FF521D6D"/>
         <StackPanel Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Collapsed'}" Grid.Row="1" Width="170" HorizontalAlignment="Center" VerticalAlignment="Top" Orientation="Horizontal" Margin="25,173,0,0" >
-            <Label Style="{DynamicResource DayColumnLabel}">mon</Label>
-            <Label Style="{DynamicResource DayColumnLabel}">tu</Label>
-            <Label Style="{DynamicResource DayColumnLabel}">wed</Label>
-            <Label Style="{DynamicResource DayColumnLabel}">th</Label>
-            <Label Style="{DynamicResource DayColumnLabel}">fri</Label>
-            <Label Style="{DynamicResource DayColumnLabel}">sat</Label>
-            <Label Style="{DynamicResource DayColumnLabel}">sun</Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="mon"></Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="tu"></Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="wed"></Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="th"></Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="fri"></Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="sat"></Label>
+            <Label Style="{DynamicResource DayColumnLabel}" Content="sun"></Label>
         </StackPanel>
         <ItemsControl Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Collapsed'}" ItemsSource="{Binding WeekDaySlots}" Grid.Row="1" Height="15" Width="170" Margin="25,190,0,0" VerticalAlignment="Top">
             <ItemsControl.ItemsPanel>
@@ -137,34 +147,34 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <ScrollViewer Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Visible'}" VerticalScrollBarVisibility="Auto" Height="140" Width="215" Margin="110,207,83,70" Grid.Row="1"  CanContentScroll="True" PanningMode="VerticalOnly">
+        <ScrollViewer Visibility="{Binding WeekCalendarVisibleStatus, FallbackValue='Collapsed'}" VerticalScrollBarVisibility="Auto" Height="140" Width="215" Margin="110,207,83,70" Grid.Row="1"  CanContentScroll="True" PanningMode="VerticalOnly">
             <DockPanel>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel Orientation="Vertical">
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >0AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >1AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >2AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >3AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >4AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >5AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >6AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >7AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >8AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >9AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >10AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >11AM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >12PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >1PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >2PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >3PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >4PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >5PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >6PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >7PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >8PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >9PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >10PM</Label>
-                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" >11PM</Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="0AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="1AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="2AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="3AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="4AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="5AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White"  Content="6AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="7AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="8AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="9AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="10AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="11AM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="12PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="1PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="2PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="3PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="4PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="5PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="6PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="7PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="8PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="9PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="10PM"></Label>
+                        <Label Style="{DynamicResource WeekColumnLabel}" Height="25" VerticalAlignment="Center" BorderThickness="0.2" BorderBrush="White" Content="11PM"></Label>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left">
                         <ItemsControl ItemsSource="{Binding MondayEventSlots}" Height="600" Width="20" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
@@ -284,15 +294,15 @@
             </DockPanel>
         </ScrollViewer>
 
-        <StackPanel  Margin="125,190,115,70"  Grid.Row="1" Visibility="{Binding MonthCalendarVisibleStatus, FallbackValue='Collapsed'}">
+        <StackPanel  Margin="125,190,115,70"  Grid.Row="1" Visibility="{Binding MonthCalendarVisibleStatus, FallbackValue='Visible'}">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Stretch">
-                <Label Style="{DynamicResource DayColumnLabel}">mon</Label>
-                <Label Style="{DynamicResource DayColumnLabel}">tu</Label>
-                <Label Style="{DynamicResource DayColumnLabel}">wed</Label>
-                <Label Style="{DynamicResource DayColumnLabel}">th</Label>
-                <Label Style="{DynamicResource DayColumnLabel}">fri</Label>
-                <Label Style="{DynamicResource DayColumnLabel}">sat</Label>
-                <Label Style="{DynamicResource DayColumnLabel}">sun</Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="mon"></Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="tu"></Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="wed"></Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="th"></Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="fri"></Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="sat"></Label>
+                <Label Style="{DynamicResource DayColumnLabel}" Content="sun"></Label>
             </StackPanel>
             <ItemsControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding DaySlotList}">
                 <ItemsControl.ItemsPanel>
