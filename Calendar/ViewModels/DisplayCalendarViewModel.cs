@@ -181,6 +181,7 @@ namespace Calendar.ViewModels
             
             loggedUser = user;
             BuildEventSlots();
+            BuildCalendarDaySlots();
             RefreshUIDayEventSlots();
         }
 
@@ -296,7 +297,21 @@ namespace Calendar.ViewModels
             for (var dayToAdd = 1; dayToAdd < DateTime.DaysInMonth(CurrentYear, CurrentMonth)+1; dayToAdd++)
             {
                 DateTime day = new DateTime(CurrentYear, CurrentMonth, dayToAdd);
-                if (calendar.GetEventsAtDateTime(day).Count != 0)
+                bool markEventsAtDay = false;
+
+                foreach(var calendarEvent in calendar.GetEventsAtDateTime(day))
+                {
+                    List<string> relatedPeople = new List<string>();
+                    relatedPeople.Add(calendarEvent.Owner);
+                    relatedPeople.AddRange(calendarEvent.InvitedUsers.Split(","));
+                    if (relatedPeople.Contains(loggedUser))
+                    {
+                        markEventsAtDay = true;
+                        break;
+                    }
+                }
+
+                if(markEventsAtDay)
                 {
                     daySlots.Add(String.Format("{0}*", dayToAdd.ToString()));
                 }
