@@ -190,8 +190,32 @@ namespace Calendar.Views
 
         private void DialogSaveButton_Click(object sender, RoutedEventArgs e)
         {
+            bool inputValidated = true;
+            if (DateInput.SelectedDate == null)
+            {
+                return;
+            }
 
-            this.DialogResult = true;
+            DateTime selectedStartDateTime = new DateTime(DateInput.SelectedDate.Value.Ticks);
+            selectedStartDateTime = selectedStartDateTime.AddHours(StartingHour);
+            selectedStartDateTime = selectedStartDateTime.AddMinutes(StartingMinutes);
+
+            DateTime selectedEndDateTime = new DateTime(DateInput.SelectedDate.Value.Ticks);
+            selectedEndDateTime = selectedEndDateTime.AddHours(EndingHour);
+            selectedEndDateTime = selectedEndDateTime.AddMinutes(EndingMinutes);
+
+            if (selectedEndDateTime < selectedStartDateTime)
+            {
+                inputValidated = false;
+                MessageBox.Show( Properties.Resources.dateTimeNotValidText, Properties.Resources.dateTimeNotValidTitle, MessageBoxButton.OK,MessageBoxImage.Error,MessageBoxResult.OK,MessageBoxOptions.ServiceNotification);
+            }
+
+
+            if (inputValidated)
+            {
+                this.DialogResult = true;
+            }
+            
         }
 
         private void DialogDeleteButton_Click(object sender, RoutedEventArgs e)

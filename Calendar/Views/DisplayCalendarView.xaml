@@ -105,7 +105,7 @@
                 <StackPanel HorizontalAlignment="Stretch"  Background="White">
                     <StackPanel Orientation="Horizontal">
                         <Label Padding="0" FontSize="8" Content="Fecha de inicio:"></Label>
-                        <TextBlock Padding="0" FontSize="8" Text="{Binding Path=SelectedEvent.StartTime}"></TextBlock>
+                        <TextBlock Padding="0" FontSize="8" Text="{Binding Path=SelectedEvent.EventStartTime}"></TextBlock>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Stretch"  Background="White">

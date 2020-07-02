@@ -61,6 +61,24 @@ namespace Calendar.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date time is not valid.
+        /// </summary>
+        internal static string dateTimeNotValidText {
+            get {
+                return ResourceManager.GetString("dateTimeNotValidText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string dateTimeNotValidTitle {
+            get {
+                return ResourceManager.GetString("dateTimeNotValidTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit event?.
         /// </summary>
         internal static string editEventPrompt {
