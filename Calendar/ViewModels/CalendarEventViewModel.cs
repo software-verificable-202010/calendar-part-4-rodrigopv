@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Navigation;
 using Calendar.Models;
 using Microsoft.VisualBasic;
+using static Calendar.Constants;
 using Color = System.Drawing.Color;
 
 namespace Calendar.ViewModels
@@ -19,6 +20,7 @@ namespace Calendar.ViewModels
         #region Constants
         private const int MaxEventWidth = 20;
         private const int MinEventWidth = 10;
+        private readonly CultureInfo applicationCulture = CultureInfo.GetCultureInfo(Constants.ApplicationCulture);
         #endregion
 
         #region Fields
@@ -51,7 +53,7 @@ namespace Calendar.ViewModels
             }
         }
 
-        public string StartTime
+        public string EventStartTime
         {
             get
             {
@@ -121,11 +123,11 @@ namespace Calendar.ViewModels
         #region Methods
         public string GetStartTime()
         {
-            return calendarEvent.GetStartingHour().ToString("D2") + ":" + calendarEvent.GetStartingMinutes().ToString("D2");
+            return calendarEvent.GetStartingHour().ToString( "D2", applicationCulture) + ":" + calendarEvent.GetStartingMinutes().ToString( "D2", applicationCulture);
         }
         public string GetFinishTime()
         {
-            return calendarEvent.GetEndingHour().ToString("D2") + ":" + calendarEvent.GetEndingMinutes().ToString("D2");
+            return calendarEvent.GetEndingHour().ToString( "D2", applicationCulture) + ":" + calendarEvent.GetEndingMinutes().ToString( "D2", applicationCulture);
         }
         private static byte GetRandomByte()
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Calendar
@@ -11,5 +12,7 @@ namespace Calendar
         public const int HourInMinutes = 60;
         public const double PerMinuteHeight = HourSlotHeight / HourInMinutes; // Height to add to event widget per each minute.
         public const int HoursInDay = 24;
+
+        public const string ApplicationCulture = "es-CL";
     }
 }

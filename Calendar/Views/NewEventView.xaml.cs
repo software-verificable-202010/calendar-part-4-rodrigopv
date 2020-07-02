@@ -41,6 +41,11 @@ namespace Calendar.Views
             InitializeComponent();
             DateInput.DisplayDate = DateTime.Today;
             PopulateSelectBoxes();
+            if (calendarEventViewModel == null)
+            {
+                throw new NullReferenceException();
+            }
+
             DateInput.SelectedDate = calendarEventViewModel.CalendarEvent.EventDate;
             DateInput.IsDropDownOpen = false;
             StartingHourInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetStartingHour();

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -18,6 +19,7 @@ namespace Calendar.Views
     {
 
         private readonly DisplayCalendarViewModel displayCalendarViewModel;
+        private readonly CultureInfo applicationCulture = CultureInfo.GetCultureInfo(Constants.ApplicationCulture);
 
         public DisplayCalendarView(string username)
         {
@@ -60,12 +62,12 @@ namespace Calendar.Views
             CalendarEventViewModel selectedEvent = (CalendarEventViewModel)selectedRectangle.DataContext;
 
             string message = "";
-            message += String.Format("Author: {0}\n", selectedEvent.Owner);
-            message += String.Format("Starting hour: {0}\n", selectedEvent.GetStartTime());
-            message += String.Format("Ending hour: {0}", selectedEvent.GetFinishTime());
+            message += String.Format(applicationCulture, "Author: {0}\n", selectedEvent.Owner);
+            message += String.Format(applicationCulture, "Starting hour: {0}\n", selectedEvent.GetStartTime());
+            message += String.Format(applicationCulture, "Ending hour: {0}", selectedEvent.GetFinishTime());
             if (selectedEvent.Owner == displayCalendarViewModel.GetLoggedUser())
             {
-                MessageBoxResult result = MessageBox.Show(message, "Edit event?", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
+                MessageBoxResult result = MessageBox.Show(message, Properties.Resources.editEventPrompt, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No);
                 if (result == MessageBoxResult.Yes)
                 {
                     NewEventView editDialog = new NewEventView(selectedEvent);
@@ -82,8 +84,11 @@ namespace Calendar.Views
                         List<string> ignoredUsers = DeleteScheduleConflicts(editDialog);
                         if (ignoredUsers.Count != 0)
                         {
+                            string errorMessageString =
+                                "Conflict detected on following user agendas: {0}. Invitation to conflict users has been ignored.";
                             string errorMessage = String.Format(
-                                "Conflict detected on following user agendas: {0}. Invitation to conflict users has been ignored.",
+                                applicationCulture,
+                                errorMessageString,
                                 String.Join(",", ignoredUsers.ToArray()));
                             MessageBox.Show(errorMessage);
                         }
@@ -98,7 +103,7 @@ namespace Calendar.Views
             }
             else
             {
-                MessageBox.Show(message, "You are invited to this event", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.No);
+                MessageBox.Show(message, Properties.Resources.userIsInvited, MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.No);
             }
 
         }
@@ -183,6 +188,7 @@ namespace Calendar.Views
                 if (ignoredUsers.Count != 0)
                 {
                     string errorMessage = String.Format(
+                        applicationCulture,
                         "Conflict detected on following user agendas: {0}. Invitation to conflict users has been ignored.",
                         String.Join(",", ignoredUsers.ToArray()));
                     MessageBox.Show(errorMessage);
@@ -198,7 +204,7 @@ namespace Calendar.Views
         {
             if (sender is Button senderButton)
             {
-                int selectedDay = Int32.Parse(senderButton.Content.ToString().Replace("*", ""));
+                int selectedDay = Int32.Parse(senderButton.Content.ToString().Replace("*", "", System.StringComparison.InvariantCulture), applicationCulture );
                 displayCalendarViewModel.CurrentDay = selectedDay;
             }
                 

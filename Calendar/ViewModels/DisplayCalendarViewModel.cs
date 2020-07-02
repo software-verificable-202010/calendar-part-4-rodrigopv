@@ -18,6 +18,8 @@ namespace Calendar.ViewModels
 
         private int DECEMBER = 12;
         private int JANUARY = 1;
+
+        private CultureInfo applicationCulture = CultureInfo.GetCultureInfo(Constants.ApplicationCulture);
         #endregion
 
         #region Fields
@@ -57,7 +59,7 @@ namespace Calendar.ViewModels
         {
             get
             {
-                return String.Format("{0} {1}", GetCurrentMonthName(), CurrentYear.ToString());
+                return String.Format(applicationCulture, "{0} {1}", GetCurrentMonthName(), CurrentYear.ToString(applicationCulture));
             }
         }
 
@@ -280,7 +282,7 @@ namespace Calendar.ViewModels
                 return 6;
             }
 
-            return Convert.ToInt32(firstDayOfMonth.DayOfWeek) - 1;
+            return Convert.ToInt32(firstDayOfMonth.DayOfWeek, applicationCulture) - 1;
 
         }
 
@@ -313,11 +315,11 @@ namespace Calendar.ViewModels
 
                 if(markEventsAtDay)
                 {
-                    daySlots.Add(String.Format("{0}*", dayToAdd.ToString()));
+                    daySlots.Add(String.Format(applicationCulture, "{0}*", dayToAdd.ToString(applicationCulture)));
                 }
                 else
                 {
-                    daySlots.Add(dayToAdd.ToString());
+                    daySlots.Add(dayToAdd.ToString(applicationCulture));
                 }
                 
             }

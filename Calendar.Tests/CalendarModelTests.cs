@@ -28,7 +28,6 @@ namespace Calendar.Tests
             int endingHour = 1;
             int startingMinutes = 0;
             int endingMinutes = 30;
-            int eventDuration = 90;
             DateTime eventDate = DateTime.Today;
 
             CalendarEvent calendarEvent = new CalendarEvent("Test", DateTime.Today, startingHour, startingMinutes, endingHour, endingMinutes, "rodrigo", "description", "");
