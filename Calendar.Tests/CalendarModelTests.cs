@@ -4,21 +4,20 @@ using Calendar.Models;
 
 namespace Calendar.Tests
 {
-    class CalendarModelTests
+    static class CalendarModelTests
     {
 
 
         [Test]
-        public void NewCalendarHasNoEventsAtArbitraryDate()
+        public static void NewCalendarHasNoEventsAtArbitraryDate()
         {
             CalendarModel calendar = new CalendarModel();
             var emptyEventList = calendar.GetEventsAtDateTime(DateTime.UnixEpoch);
-            //Assert.Pass();
             Assert.AreEqual(emptyEventList.Count, 0);
         }
 
         [Test]
-        public void CalendarMethods()
+        public static void CalendarMethods()
         {
             CalendarModel calendar = new CalendarModel();
             var emptyEventList = calendar.GetEventsAtDateTime(DateTime.UnixEpoch);
@@ -42,7 +41,7 @@ namespace Calendar.Tests
         }
 
         [Test]
-        public void CalendarProperties()
+        public static void CalendarProperties()
         {
             CalendarModel calendar = new CalendarModel();
             calendar.CurrentTime = DateTime.Today;

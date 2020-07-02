@@ -18,74 +18,14 @@ namespace Calendar.Views
     /// </summary>
     public partial class NewEventView : Window
     {
+        #region Fields
         private const int intMinValue = 0;
         private const int defaultEndingHourIndex = 4;
         private bool deleteRequested = false;
         private CalendarEventViewModel calendarEventViewModel;
-        public NewEventView()
-        {
-            InitializeComponent();
-            DateInput.DisplayDate = DateTime.Today;
+        #endregion
 
-            PopulateSelectBoxes();
-            StartingHourInput.SelectedIndex = intMinValue;
-            EndingHourInput.SelectedIndex = defaultEndingHourIndex;
-            StartingMinutesInput.SelectedIndex = intMinValue;
-            EndingMinutesInput.SelectedIndex = intMinValue;
-
-            Title = "New Event Dialog";
-        }
-
-        public NewEventView(CalendarEventViewModel calendarEventViewModel)
-        {
-            InitializeComponent();
-            DateInput.DisplayDate = DateTime.Today;
-            PopulateSelectBoxes();
-            if (calendarEventViewModel == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            DateInput.SelectedDate = calendarEventViewModel.CalendarEvent.EventDate;
-            DateInput.IsDropDownOpen = false;
-            StartingHourInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetStartingHour();
-            StartingMinutesInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetStartingMinutes();
-            TitleInput.Text = calendarEventViewModel.Title;
-            EndingHourInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetEndingHour();
-            EndingMinutesInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetEndingMinutes();
-            DescriptionInput.Text = calendarEventViewModel.CalendarEvent.Description;
-            InvitedUsersInput.Text = calendarEventViewModel.CalendarEvent.InvitedUsers;
-            Title = "Edit Event Dialog";
-            DialogDeleteButton.Visibility = Visibility.Visible;
-            this.calendarEventViewModel = calendarEventViewModel;
-
-
-        }
-
-        private void PopulateSelectBoxes()
-        {
-
-            List<int> availableHours = new List<int>();
-            List<int> availableMinutes = new List<int>();
-
-            for (int i = 0; i < Constants.HoursInDay; i++)
-            {
-                availableHours.Add(i);
-            }
-            for (int i = 0; i < Constants.HourInMinutes; i++)
-            {
-                availableMinutes.Add(i);
-            }
-            StartingHourInput.ItemsSource = availableHours;
-            
-            EndingHourInput.ItemsSource = availableHours;
-            
-            StartingMinutesInput.ItemsSource = availableMinutes;
-            
-            EndingMinutesInput.ItemsSource = availableMinutes;
-            
-        }
-
+        #region Properties
         public CalendarEventViewModel CalendarEventViewModel
         {
             get
@@ -187,6 +127,72 @@ namespace Calendar.Views
             }
 
         }
+        #endregion
+
+        #region Methods
+        public NewEventView()
+        {
+            InitializeComponent();
+            DateInput.DisplayDate = DateTime.Today;
+
+            PopulateSelectBoxes();
+            StartingHourInput.SelectedIndex = intMinValue;
+            EndingHourInput.SelectedIndex = defaultEndingHourIndex;
+            StartingMinutesInput.SelectedIndex = intMinValue;
+            EndingMinutesInput.SelectedIndex = intMinValue;
+
+            Title = "New Event Dialog";
+        }
+
+        public NewEventView(CalendarEventViewModel calendarEventViewModel)
+        {
+            InitializeComponent();
+            DateInput.DisplayDate = DateTime.Today;
+            PopulateSelectBoxes();
+            if (calendarEventViewModel == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            DateInput.SelectedDate = calendarEventViewModel.CalendarEvent.EventDate;
+            DateInput.IsDropDownOpen = false;
+            StartingHourInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetStartingHour();
+            StartingMinutesInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetStartingMinutes();
+            TitleInput.Text = calendarEventViewModel.Title;
+            EndingHourInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetEndingHour();
+            EndingMinutesInput.SelectedValue = calendarEventViewModel.CalendarEvent.GetEndingMinutes();
+            DescriptionInput.Text = calendarEventViewModel.CalendarEvent.Description;
+            InvitedUsersInput.Text = calendarEventViewModel.CalendarEvent.InvitedUsers;
+            Title = "Edit Event Dialog";
+            DialogDeleteButton.Visibility = Visibility.Visible;
+            this.calendarEventViewModel = calendarEventViewModel;
+
+
+        }
+
+        private void PopulateSelectBoxes()
+        {
+
+            List<int> availableHours = new List<int>();
+            List<int> availableMinutes = new List<int>();
+
+            for (int i = 0; i < Constants.HoursInDay; i++)
+            {
+                availableHours.Add(i);
+            }
+            for (int i = 0; i < Constants.HourInMinutes; i++)
+            {
+                availableMinutes.Add(i);
+            }
+            StartingHourInput.ItemsSource = availableHours;
+            
+            EndingHourInput.ItemsSource = availableHours;
+            
+            StartingMinutesInput.ItemsSource = availableMinutes;
+            
+            EndingMinutesInput.ItemsSource = availableMinutes;
+            
+        }
 
         private void DialogSaveButton_Click(object sender, RoutedEventArgs e)
         {
@@ -223,5 +229,7 @@ namespace Calendar.Views
             deleteRequested = true;
             this.DialogResult = true;
         }
+        #endregion
+
     }
 }

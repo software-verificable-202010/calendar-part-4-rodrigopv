@@ -10,13 +10,22 @@ namespace Calendar.Models
     [Serializable]
     public class CalendarModel
     {
+        #region Fields
         private List<CalendarEvent> events;
+        #endregion
+
+        #region Properties
+        public DateTime CurrentTime
+        {
+            get; set;
+        }
+        #endregion
+
+        #region Methods
         public CalendarModel()
         {
             events = new List<CalendarEvent>();
         }
-
-        public DateTime CurrentTime { get; set; }
 
         public List<CalendarEvent> GetEventsAtDateTime(DateTime date)
         {
@@ -40,5 +49,6 @@ namespace Calendar.Models
         {
             events.Remove(calendarEvent);
         }
+        #endregion
     }
 }

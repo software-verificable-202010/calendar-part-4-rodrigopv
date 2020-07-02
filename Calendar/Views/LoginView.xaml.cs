@@ -13,10 +13,11 @@ using System.Windows.Shapes;
 namespace Calendar.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for LoginView.xaml.
     /// </summary>
     public partial class LoginView : Window
     {
+        #region Methods
         public LoginView()
         {
             InitializeComponent();
@@ -39,5 +40,7 @@ namespace Calendar.Views
                 e.Handled = true;
             }
         }
+        #endregion
+
     }
 }

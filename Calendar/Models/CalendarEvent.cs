@@ -9,30 +9,21 @@ namespace Calendar.Models
     [Serializable]
     public class CalendarEvent
     {
-        private string title;
-        private int startingHour;
-        private int startingMinutes;
+        #region Fields
+            private string title;
+            private int startingHour;
+            private int startingMinutes;
 
-        private int endingHour;
-        private int endingMinutes;
-        private string owner;
-        private string description;
-        private string invitedUsers;
+            private int endingHour;
+            private int endingMinutes;
+            private string owner;
+            private string description;
+            private string invitedUsers;
 
-        private DateTime date;
-        public CalendarEvent(string title, DateTime eventDate, int startingHour, int startingMinutes, int endingHour, int endingMinutes, string owner, string description, string invitedUsers)
-        {
-            this.title = title;
-            this.date = eventDate;
-            this.startingHour = startingHour;
-            this.startingMinutes = startingMinutes;
-            this.endingHour = endingHour;
-            this.endingMinutes = endingMinutes;
-            this.owner = owner;
-            this.description = description;
-            this.invitedUsers = invitedUsers;
-        }
+            private DateTime date;
+        #endregion
 
+        #region Properties
         public string Title {
             get
             {
@@ -69,12 +60,6 @@ namespace Calendar.Models
 
             }
         }
-
-        public int GetDurationInMinutes()
-        {
-            return (endingHour - startingHour) * Constants.HourInMinutes + endingMinutes - startingMinutes;
-        }
-
         public DateTime EventDate
         {
             get
@@ -86,6 +71,39 @@ namespace Calendar.Models
                 date = value;
             }
         }
+        public string InvitedUsers
+        {
+            get
+            {
+                return invitedUsers;
+            }
+            set
+            {
+                invitedUsers = value;
+            }
+        }
+        #endregion
+
+        #region Methods
+        public CalendarEvent(string title, DateTime eventDate, int startingHour, int startingMinutes, int endingHour, int endingMinutes, string owner, string description, string invitedUsers)
+        {
+            this.title = title;
+            this.date = eventDate;
+            this.startingHour = startingHour;
+            this.startingMinutes = startingMinutes;
+            this.endingHour = endingHour;
+            this.endingMinutes = endingMinutes;
+            this.owner = owner;
+            this.description = description;
+            this.invitedUsers = invitedUsers;
+        }
+
+        public int GetDurationInMinutes()
+        {
+            return (endingHour - startingHour) * Constants.HourInMinutes + endingMinutes - startingMinutes;
+        }
+
+
         public int GetStartingHour()
         {
             return startingHour;
@@ -123,16 +141,6 @@ namespace Calendar.Models
             endingMinutes = newEndingMinutes;
         }
 
-        public string InvitedUsers
-        {
-            get
-            {
-                return invitedUsers;
-            }
-            set
-            {
-                invitedUsers = value;
-            }
-        } 
+        #endregion
     }
 }

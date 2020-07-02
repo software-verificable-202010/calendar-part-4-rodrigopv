@@ -6,13 +6,14 @@ using Calendar.ViewModels;
 
 namespace Calendar.Tests
 {
-    class DisplayCalendarViewModelTests
+    static class DisplayCalendarViewModelTests
     {
         [Test]
-        public void HasValidConstructor()
+        public static void HasValidConstructor()
         {
 
             DisplayCalendarViewModel viewModel = new DisplayCalendarViewModel();
+            Assert.NotNull(viewModel);
         }
     }
 }

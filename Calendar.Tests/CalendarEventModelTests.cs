@@ -33,7 +33,6 @@ namespace Calendar.Tests
             int startingMinutes = 0;
             int endingMinutes = 30;
 
-            DateTime date = DateTime.Now;
             string title = "Test";
             string event_description = "description";
             string owner = "rodrigo";
@@ -86,7 +85,7 @@ namespace Calendar.Tests
             Assert.AreEqual(calendarEvent.Owner, owner);
             Assert.AreEqual(calendarEvent.Title, title);
 
-            // Test setter properties
+            // Test setter properties.
             calendarEvent.Title = newTitle;
             calendarEvent.Description = newEventDescription;
             calendarEvent.Owner = newOwner;

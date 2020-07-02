@@ -18,8 +18,8 @@ namespace Calendar.ViewModels
     public class CalendarEventViewModel : BaseViewModel
     {
         #region Constants
-        private const int MaxEventWidth = 20;
-        private const int MinEventWidth = 10;
+        private const int maxEventWidth = 20;
+        private const int minEventWidth = 10;
         private readonly CultureInfo applicationCulture = CultureInfo.GetCultureInfo(Constants.ApplicationCulture);
         #endregion
 
@@ -27,14 +27,6 @@ namespace Calendar.ViewModels
         private CalendarEvent calendarEvent;
         #endregion
 
-        public CalendarEventViewModel(CalendarEvent calendarEvent)
-        {
-            this.calendarEvent = calendarEvent;
-            BackgroundColor = GetRandomColor();
-            Random randomNumberGenerator = new Random();
-            Width = randomNumberGenerator.Next(MinEventWidth, MaxEventWidth + 1);
-
-        }
         #region Properties
         public SolidColorBrush BackgroundColor
         {
@@ -121,13 +113,25 @@ namespace Calendar.ViewModels
         #endregion
 
         #region Methods
+        public CalendarEventViewModel(CalendarEvent calendarEvent)
+        {
+            this.calendarEvent = calendarEvent;
+            BackgroundColor = GetRandomColor();
+            Random randomNumberGenerator = new Random();
+            Width = randomNumberGenerator.Next(minEventWidth, maxEventWidth + 1);
+
+        }
         public string GetStartTime()
         {
-            return calendarEvent.GetStartingHour().ToString( "D2", applicationCulture) + ":" + calendarEvent.GetStartingMinutes().ToString( "D2", applicationCulture);
+            return string.Format(applicationCulture,"{0}:{1}",
+                calendarEvent.GetStartingHour().ToString("D2", applicationCulture),
+                calendarEvent.GetStartingMinutes().ToString("D2", applicationCulture));
         }
         public string GetFinishTime()
         {
-            return calendarEvent.GetEndingHour().ToString( "D2", applicationCulture) + ":" + calendarEvent.GetEndingMinutes().ToString( "D2", applicationCulture);
+            return string.Format(applicationCulture, "{0}:{1}",
+                calendarEvent.GetEndingHour().ToString( "D2", applicationCulture),
+                calendarEvent.GetEndingMinutes().ToString( "D2", applicationCulture));
         }
         private static byte GetRandomByte()
         {

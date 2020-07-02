@@ -13,14 +13,16 @@ using Calendar.ViewModels;
 namespace Calendar.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
     /// </summary>
     public partial class DisplayCalendarView
     {
-
+        #region Fields
         private readonly DisplayCalendarViewModel displayCalendarViewModel;
         private readonly CultureInfo applicationCulture = CultureInfo.GetCultureInfo(Constants.ApplicationCulture);
+        #endregion
 
+        #region Methods
         public DisplayCalendarView(string username)
         {
             displayCalendarViewModel = new DisplayCalendarViewModel();
@@ -40,11 +42,6 @@ namespace Calendar.Views
             {
                 this.DragMove();
             }
-        }
-
-        private void OnRectangleClick(object sender, MouseEventArgs e)
-        {
-            MessageBox.Show("Rectangle");
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e) => this.displayCalendarViewModel.NextButtonClick();
@@ -119,6 +116,29 @@ namespace Calendar.Views
 
         }
 
+        private void NewEvent_Button_Click(object sender, RoutedEventArgs e)
+        {
+            NewEventView newEventDialog = new NewEventView();
+            bool? result = newEventDialog.ShowDialog();
+            string currentUser = displayCalendarViewModel.GetLoggedUser();
+            if (result == true)
+            {
+                List<string> ignoredUsers = DeleteScheduleConflicts(newEventDialog);
+                if (ignoredUsers.Count != 0)
+                {
+                    string errorMessage = String.Format(
+                        applicationCulture,
+                        "Conflict detected on following user agendas: {0}. Invitation to conflict users has been ignored.",
+                        String.Join(",", ignoredUsers.ToArray()));
+                    MessageBox.Show(errorMessage);
+                }
+                CalendarEvent newEvent = new CalendarEvent(newEventDialog.TitleInput.Text, newEventDialog.PickedDate, newEventDialog.StartingHour, 
+                    newEventDialog.StartingMinutes, newEventDialog.EndingHour, newEventDialog.EndingMinutes, currentUser,newEventDialog.Description,
+                    newEventDialog.InvitedUsers);
+                displayCalendarViewModel.AddEvent(newEvent);
+            }
+        }
+
         private List<String> DeleteScheduleConflicts(NewEventView newEventDialog)
         {
             int newEventStartTimeInMinutes = newEventDialog.StartingHour * Constants.HourInMinutes +
@@ -134,7 +154,7 @@ namespace Calendar.Views
                 {
                     if (newEventDialog.CalendarEventViewModel != null && newEventDialog.CalendarEventViewModel.CalendarEvent == calendarEvent)
                     {
-                        // Make sure there is no conflict with the same event being edited
+                        // Make sure there is no conflict with the same event being edited.
                         continue;
                     }
                     List<string> relatedPeople = new List<string>();
@@ -161,7 +181,7 @@ namespace Calendar.Views
                             invitedUsers.Remove(invitedUser);
                             break;
                         }
-                        // New event starts before another event and ends after another, but there's still an event between
+                        // New event starts before another event and ends after another, but there's still an event between.
                         if (newEventStartTimeInMinutes < startTimeInMinutes && endTimeInMinutes < newEventEndTimeInMinutes)
                         {
                             ignoredUsers.Add(invitedUser);
@@ -176,30 +196,6 @@ namespace Calendar.Views
             return ignoredUsers;
         }
 
-
-        private void NewEvent_Button_Click(object sender, RoutedEventArgs e)
-        {
-            NewEventView newEventDialog = new NewEventView();
-            bool? result = newEventDialog.ShowDialog();
-            string currentUser = displayCalendarViewModel.GetLoggedUser();
-            if (result == true)
-            {
-                List<string> ignoredUsers = DeleteScheduleConflicts(newEventDialog);
-                if (ignoredUsers.Count != 0)
-                {
-                    string errorMessage = String.Format(
-                        applicationCulture,
-                        "Conflict detected on following user agendas: {0}. Invitation to conflict users has been ignored.",
-                        String.Join(",", ignoredUsers.ToArray()));
-                    MessageBox.Show(errorMessage);
-                }
-                CalendarEvent newEvent = new CalendarEvent(newEventDialog.TitleInput.Text, newEventDialog.PickedDate, newEventDialog.StartingHour, 
-                    newEventDialog.StartingMinutes, newEventDialog.EndingHour, newEventDialog.EndingMinutes, currentUser,newEventDialog.Description,
-                    newEventDialog.InvitedUsers);
-                displayCalendarViewModel.AddEvent(newEvent);
-            }
-        }
-
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             if (sender is Button senderButton)
@@ -210,5 +206,7 @@ namespace Calendar.Views
                 
             displayCalendarViewModel.ToggleDisplayMode();
         }
+        #endregion
+
     }
 }

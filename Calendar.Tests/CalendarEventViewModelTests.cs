@@ -7,16 +7,15 @@ using System.Text;
 
 namespace Calendar.Tests
 {
-    class CalendarEventViewModelTests
+    static class CalendarEventViewModelTests
     {
         [Test]
-        public void HasValidConstructor()
+        public static void HasValidConstructor()
         {
             int startingHour = 0;
             int endingHour = 1;
             int startingMinutes = 0;
             int endingMinutes = 30;
-            DateTime eventDate = DateTime.Today;
 
             CalendarEvent calendarEvent = new CalendarEvent("Test", DateTime.Today, startingHour, startingMinutes, endingHour, endingMinutes, "rodrigo", "description", "");
 
@@ -24,7 +23,7 @@ namespace Calendar.Tests
         }
 
         [Test]
-        public void TestProperties()
+        public static void TestProperties()
         {
             int startingHour = 0;
             int endingHour = 1;
@@ -32,7 +31,6 @@ namespace Calendar.Tests
             int endingMinutes = 30;
             string owner = "rodrigo";
             string title = "Test";
-            DateTime eventDate = DateTime.Today;
 
             CalendarEvent calendarEvent = new CalendarEvent(title, DateTime.Today, startingHour, startingMinutes, endingHour, endingMinutes, owner, "description", "");
             CalendarEventViewModel viewModel = new CalendarEventViewModel(calendarEvent);
