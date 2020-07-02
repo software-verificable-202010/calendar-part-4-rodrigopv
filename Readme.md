@@ -15,8 +15,8 @@ Debido a dificultades gráficas se ha implementado el marcador de eventos en la v
 
 ## Sobre Static Analyzer
 Instalé visual studio 2019 enterprise junto a mi instalación de VS2019 community y esto introdujo unos errores en la lista pero además me mostró otros, aquí una captura donde se ve que no existe ningún error respecto al análisis estático (se arreglaron todos y desaparecio el del bug).
-[screenshot](static_analyzer.png)
+![screenshot](static_analyzer.png?raw=true)
 
 ## Test Coverage
 Aquí una captura del output de test coverage de VS2019 Enterprise. Al ser un proyecto .NET Core, este no es soportado por axoCover.
-[screenshot](tests.png)
+![screenshot](tests.png?raw=true)
