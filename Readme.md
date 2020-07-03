@@ -20,3 +20,7 @@ Instalé visual studio 2019 enterprise junto a mi instalación de VS2019 community
 ## Test Coverage
 Aquí una captura del output de test coverage de VS2019 Enterprise. Al ser un proyecto .NET Core, este no es soportado por axoCover.
 ![screenshot](tests.png?raw=true)
+
+## Resultados Test
+Aquí una captura del output de los test tras ejecución
+![screenshot](testpasando.png?raw=true)
